@@ -1,0 +1,20 @@
+--- #YAML:1.0
+name:                Data-Consumer
+version:             0.09
+abstract:            Repeatedly consume a data resource in a robust way
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.36
+distribution_type:   module
+requires:     
+    Data::Dumper:                  0
+    DBI:                           0
+    Fcntl:                         0
+    File::Path:                    0
+    File::Spec:                    0
+    POSIX:                         0
+    Test::More:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - Yves Orton <YVES@cpan.org>

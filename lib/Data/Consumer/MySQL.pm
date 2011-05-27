@@ -26,11 +26,11 @@ Data::Consumer::MySQL - Data::Consumer implementation for a mysql database table
 
 =head1 VERSION
 
-Version 0.09
+Version 0.11
 
 =cut
 
-$VERSION= '0.09';
+$VERSION= '0.11';
 
 =head1 SYNOPSIS
 
@@ -224,16 +224,16 @@ sub new {
         $id_field
         FROM $table
         WHERE
-        GET_LOCK( CONCAT_WS("=", ?, $id_field ), 0) != 0
+        $id_field > ?
         AND $flag_field $flag_op
-        AND $id_field > ?
+        AND GET_LOCK( CONCAT_WS("=", ?, $id_field ), 0) != 0
         LIMIT 1
         ';
             s/^\s+//mg;
             s/\$(\w+)/$opts{$1} || confess "Option $1 is mandatory"/ge;
             $_;
         };
-        $opts{select_args}= [ $opts{lock_prefix}, @flag_val ];
+        $opts{select_args}= [ @flag_val, $opts{lock_prefix} ];
     }
 
     $opts{update_sql} ||= do {
@@ -305,8 +305,7 @@ sub acquire {
     $self->reset if !defined $self->{last_id};
     do {
 	$self->debug_warn( 5, "last_id was $self->{last_id}");
-	my ($id)= $dbh->selectrow_array( $self->{select_sql}, undef, @{ $self->{select_args} || [] },
-	    $self->{last_id} );
+	my ($id)= $dbh->selectrow_array( $self->{select_sql}, undef, $self->{last_id}, @{ $self->{select_args} || [] } );
 	if ( defined $id ) {
 	    $self->{last_lock}= $id;
 	    $self->debug_warn( 5, "acquired '$id'" );
@@ -392,7 +391,7 @@ Igor Sutton <IZUT@cpan.org> for ideas, testing and support.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Yves Orton, all rights reserved.
+Copyright 2008, 2010, 2011 Yves Orton, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

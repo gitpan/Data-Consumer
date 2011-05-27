@@ -26,11 +26,11 @@ Data::Consumer::MySQL - Data::Consumer implementation for a mysql database table
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =cut
 
-$VERSION= '0.11';
+$VERSION= '0.12';
 
 =head1 SYNOPSIS
 
@@ -41,6 +41,7 @@ $VERSION= '0.11';
         table => 'T',
         id_field= > 'id',
         flag_field => 'done',
+        lock_prefix => $worker_name,
         unprocessed => 0,
         working => 1,
         processed => 2,
@@ -90,6 +91,13 @@ an object is processed or not.
 =item lock_prefix => 'my-lock-name'
 
 The prefix to use for the mysql locks. Defaults to C<$0-$table>.
+
+It is B<strongly> recommended that end-users of this module explicitly
+specify a lock_prefix in production environments. A multi-process
+system relying on mutual exclusion B<will> run into problems when
+consuming from the same source if $0 and $table are not identical
+between workers. Generally, using the name of the consuming module
+should suffice (e.g. Your::Data::Consumer::Worker).
 
 =item unprocessed => 0
 

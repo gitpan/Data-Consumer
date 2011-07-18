@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Data-Consumer
-version:            0.12
+version:            0.13
 abstract:           Repeatedly consume a data resource in a robust way
 author:
     - Yves Orton <YVES@cpan.org>

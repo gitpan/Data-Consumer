@@ -30,11 +30,11 @@ Data::Consumer::Dir - Data::Consumer implementation for a directory of files res
 
 =head1 VERSION
 
-Version 0.09
+Version 0.14
 
 =cut
 
-$VERSION= '0.09';
+$VERSION= '0.14';
 
 =head1 SYNOPSIS
 
@@ -82,7 +82,7 @@ working.  This will be called with the arguments C<($consumer,
 
 =item processed => $path_spec
 
-Once sucessfully processed the files will be moved to this directory.
+Once successfully processed the files will be moved to this directory.
 
 May also be a callback which is responsible for marking the item as
 processed.  This will be called with the arguments C<($consumer,
@@ -170,7 +170,7 @@ Reset the state of the object.
 
 =head2 $object->acquire()
 
-Aquire an item to be processed.
+Acquire an item to be processed.
 
 Returns an identifier to be used to identify the item acquired.
 
